@@ -66,7 +66,7 @@ function LazadaImportProducts() {
     const [modalMini,
         setmodalMini] = useState(false);
     const [deviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
-    const [nullDevice, setNullDevice] = useState("");
+    const [nullDevice, setNullDevice] = useState("FACING_MODES.USER");
     const [ShortImage,setShortImage] = useState({data: null, error: null})
     const handleTakePhoto = useCallback((dataUri) => {
         setShortImage({data: dataUri, error: false})
@@ -87,9 +87,8 @@ function LazadaImportProducts() {
         (e) => {
             setNullDevice(deviceCame[e.target.value])
         },
-        [],
+        [deviceCame],
     )
-    console.log(nullDevice);
     return (
         <React.Fragment>
             <div className="content">
@@ -108,7 +107,7 @@ function LazadaImportProducts() {
                                                     imageType={IMAGE_TYPES.JPG}
                                                     imageCompression={0.97}
                                                     isMaxResolution={true}
-                                                    idealFacingMode={nullDevice ? nullDevice : "FACING_MODES.ENVIRONMENT"}
+                                                    idealFacingMode={nullDevice}
                                                     isImageMirror={false}
                                                     isSilentMode={true}
                                                     isDisplayStartCameraError={true}
