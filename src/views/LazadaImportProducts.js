@@ -65,7 +65,7 @@ function LazadaImportProducts() {
     const [WidthAndHight] = useState({width: 640, height: 280})
     const [modalMini,
         setmodalMini] = useState(false);
-    const [deviceCame , setdeviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
+    const [deviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
     const [nullDevice, setNullDevice] = useState("");
     const [ShortImage,setShortImage] = useState({data: null, error: null})
     const handleTakePhoto = useCallback((dataUri) => {
@@ -87,8 +87,9 @@ function LazadaImportProducts() {
         (e) => {
             setNullDevice(deviceCame[e.target.value])
         },
-        [nullDevice],
+        [],
     )
+    console.log(nullDevice);
     return (
         <React.Fragment>
             <div className="content">
