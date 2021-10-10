@@ -65,7 +65,7 @@ function LazadaImportProducts() {
     const [WidthAndHight] = useState({width: 640, height: 280})
     const [modalMini,
         setmodalMini] = useState(false);
-    const [deviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
+    const [deviceCame , setdeviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
     const [nullDevice, setNullDevice] = useState("");
     const [ShortImage,setShortImage] = useState({data: null, error: null})
     const handleTakePhoto = useCallback((dataUri) => {
@@ -154,7 +154,7 @@ function LazadaImportProducts() {
                                     </ModalHeader>
                                     <ModalBody>
                                         <FormGroup>
-                                            <Label for="exampleSelect1">Hãy chọn camera</Label>
+                                            <Label for="exampleSelect1">Hãy chọn camera <Badge color="success" pill>{nullDevice}</Badge></Label>
                                             <Input type="select" name="select" id="exampleSelect1"  onChange={e => handleAddrTypeChange(e)} style={{color: "black"}}>
                                                 {
                                                     deviceCame.map((name, key) => <option key={key} value={key}>{name}</option>)
