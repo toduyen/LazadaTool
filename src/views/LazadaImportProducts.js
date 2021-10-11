@@ -106,7 +106,6 @@ function LazadaImportProducts() {
                                                 <Camera
                                                     imageType={IMAGE_TYPES.JPG}
                                                     imageCompression={0.97}
-                                                    isMaxResolution={true}
                                                     idealFacingMode={nullDevice}
                                                     isImageMirror={false}
                                                     isSilentMode={true}
