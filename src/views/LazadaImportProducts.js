@@ -104,14 +104,8 @@ function LazadaImportProducts() {
                                         <Col md="12">
                                             <FormGroup>
                                                 <Camera
-                                                    imageType={IMAGE_TYPES.JPG}
-                                                    imageCompression={0.97}
+                                                
                                                     idealFacingMode={nullDevice}
-                                                    isImageMirror={false}
-                                                    isSilentMode={true}
-                                                    isDisplayStartCameraError={true}
-                                                    isFullscreen={false}
-                                                    sizeFactor={1}
                                                     idealResolution={WidthAndHight}
                                                     onTakePhoto={(dataUri) => {
                                                     handleTakePhoto(dataUri)
