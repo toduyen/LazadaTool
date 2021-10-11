@@ -20,9 +20,9 @@ import {
     ModalBody,
     Label
 } from "reactstrap";
-import Camera, {IMAGE_TYPES} from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
+import Webcam from "react-webcam";
 function LazadaImportProducts() {
+    const webcamRef = React.useRef(null);
     const formik = useFormik({
         initialValues: {
             nameProduct: '',
@@ -62,33 +62,35 @@ function LazadaImportProducts() {
             alert(JSON.stringify(values));
         }
     });
-    const [WidthAndHight] = useState({width: 640, height: 280})
+    const [setUpCam,
+        setOptionCam] = useState({width: 800, height: 580, facingMode: 'user'})
     const [modalMini,
         setmodalMini] = useState(false);
-    const [deviceCame] = useState(["FACING_MODES.USER", "FACING_MODES.ENVIRONMENT"])
-    const [nullDevice, setNullDevice] = useState("FACING_MODES.USER");
-    const [ShortImage,setShortImage] = useState({data: null, error: null})
-    const handleTakePhoto = useCallback((dataUri) => {
-        setShortImage({data: dataUri, error: false})
-    }, [])
-    const handleCameraError = useCallback((error) => {
-        setShortImage({data: null, error: true})
-    }, [])
+    const [deviceCame] = useState(["user", "environment"])
+    const [ShortImage,
+        setShortImage] = useState({data: null, error: null})
     const resetDataImage = useCallback(() => {
         setShortImage({data: null, error: false})
     }, [])
-    const toggleModalMini = useCallback(
-        () => {
-            setmodalMini(!modalMini);
-        },
-        [modalMini],
-    )
-    const handleAddrTypeChange = useCallback(
-        (e) => {
-            setNullDevice(deviceCame[e.target.value])
-        },
-        [deviceCame],
-    )
+    const toggleModalMini = useCallback(() => {
+        setmodalMini(!modalMini);
+    }, [modalMini],)
+    const handleAddrTypeChange = useCallback((e) => {
+        setOptionCam({
+            width: 800,
+            height: 580,
+            facingMode: deviceCame[e.target.value]
+        })
+    }, [deviceCame],)
+    const capture = React.useCallback(() => {
+        const imageSrc = webcamRef
+            .current
+            .getScreenshot();
+        setShortImage({data: imageSrc, error: false})
+    }, [webcamRef]);
+    const handleCameraError = useCallback(() => {
+        setShortImage({data: null, error: true})
+    }, [])
     return (
         <React.Fragment>
             <div className="content">
@@ -102,17 +104,25 @@ function LazadaImportProducts() {
                                 <Form>
                                     <Row>
                                         <Col md="12">
-                                            <FormGroup>
-                                                <Camera
-                                                
-                                                    idealFacingMode={nullDevice}
-                                                    idealResolution={WidthAndHight}
-                                                    onTakePhoto={(dataUri) => {
-                                                    handleTakePhoto(dataUri)
+                                            <FormGroup className='d-flex justify-content-center'>
+                                                <Webcam
+                                                    className='img-fluid'
+                                                    audio={true}
+                                                    height={580}
+                                                    ref={webcamRef}
+                                                    screenshotFormat="image/jpeg"
+                                                    width={800}
+                                                    onUserMediaError={(error) => {
+                                                    handleCameraError(error);
                                                 }}
-                                                    onCameraError=
-                                                    {(error) =>{handleCameraError(error)} }/>
+                                                    videoConstraints={setUpCam}/>
                                             </FormGroup>
+                                            <div className="d-flex justify-content-center">
+                                            <Button className="btn-round animation-on-hover" color="warning"  onClick={capture}>
+                                               📸 SHORT
+                                            </Button>
+                                            </div>
+                                          
                                         </Col>
                                     </Row>
                                 </Form>
@@ -147,11 +157,19 @@ function LazadaImportProducts() {
                                     </ModalHeader>
                                     <ModalBody>
                                         <FormGroup>
-                                            <Label for="exampleSelect1">Hãy chọn camera <Badge color="success" pill>{nullDevice}</Badge></Label>
-                                            <Input type="select" name="select" id="exampleSelect1"  onChange={e => handleAddrTypeChange(e)} style={{color: "black"}}>
-                                                {
-                                                    deviceCame.map((name, key) => <option key={key} value={key}>{name}</option>)
-                                                }
+                                            <Label for="exampleSelect1">Hãy chọn camera
+                                                <Badge color="success" pill>{setUpCam.facingMode}</Badge>
+                                            </Label>
+                                            <Input
+                                                type="select"
+                                                name="select"
+                                                id="exampleSelect1"
+                                                onChange={e => handleAddrTypeChange(e)}
+                                                style={{
+                                                color: "black"
+                                            }}>
+                                                {deviceCame.map((name, key) => <option key={key} value={key}>{name}</option>)
+}
                                             </Input>
                                         </FormGroup>
                                     </ModalBody>
